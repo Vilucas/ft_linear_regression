@@ -6,7 +6,7 @@
 #    By: viclucas <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/09/25 16:19:11 by viclucas          #+#    #+#              #
-#    Updated: 2019/09/25 16:25:16 by viclucas         ###   ########.fr        #
+#    Updated: 2019/09/27 21:49:09 by viclucas         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -43,3 +43,33 @@ def     other_average(price_list, mileage_list, average_price, average_mileage):
     m /= (average_price * average_price) - average_pp
     return m
 
+def     data_destandardization(d):
+
+    for i in range(len(d['price_list'])):
+        d['price_list'][i] = round((d['price_list'][i] * d['sd_price']) + d['average_price'])
+    for i in range(len(d['mileage_list'])):
+        d['mileage_list'][i] = round((d['mileage_list'][i] * d['sd_mileage']) + d['average_mileage'])
+    return d
+
+def     data_standardization(d):
+    sd_price = 0
+
+    for i in range(len(d['price_list'])):
+        sd_price += (d['price_list'][i] - d['average_price']) ** 2
+    sd_price = sd_price / len(d['price_list'])
+    sd_price = math.sqrt(sd_price)
+    for i in range(len(d['price_list'])):
+        d['price_list'][i] = (d['price_list'][i] - d['average_price']) / sd_price
+    ##
+    #mileage
+    ##
+    sd_mileage = 0
+    for i in range(len(d['mileage_list'])):
+        sd_mileage += abs(d['mileage_list'][i] - d['average_mileage']) ** 2
+    sd_mileage = sd_mileage / len(d['mileage_list'])
+    sd_mileage = math.sqrt(sd_mileage)
+    for i in range(len(d['mileage_list'])):
+        d['mileage_list'][i] = (d['mileage_list'][i] - d['average_mileage']) / sd_mileage
+    d['sd_mileage'] = sd_mileage
+    d['sd_price'] = sd_price
+    return d

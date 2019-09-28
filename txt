@@ -1,0 +1,1 @@
+ max(x) + min(x) *  min(x) + z = x
