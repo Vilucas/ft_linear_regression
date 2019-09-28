@@ -6,14 +6,13 @@
 #    By: viclucas <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/09/23 09:52:36 by viclucas          #+#    #+#              #
-#    Updated: 2019/09/27 22:01:38 by viclucas         ###   ########.fr        #
+#    Updated: 2019/09/27 23:44:32 by viclucas         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 import  argparse
 import  numpy as np
 import  math
-import statistics
 
 def     data_denormalization(data):
     for i in range(len(data['price_list'])):
@@ -32,13 +31,6 @@ def     data_normalization(data):
         data['mileage_list'][i] = data['mileage_list'][i] - min(data['mileage_list'])
         data['mileage_list'][i] /= max(data['mileage_list']) - min(data['mileage_list']) 
     return data
-
-def     loss_computing(price_list, mileage_list, slope, c, lr):
-    for i in range(len(price_list)):
-        y = slope * price_list[i] + c
-        residual += (mileage_list[i] - y) ** 2
-        loss = (residual * lr) / float(len(price_list))
-    return loss
 
 def     gradient_descent(data_b):
     m = 0
@@ -62,11 +54,7 @@ def     gradient_descent(data_b):
         m = m - derror_dm / len(data_b['mileage_list']) * lr
         derror_db = 0
         derror_dm = 0
-    print(b)
-    return data_b
-#        residual = loss_computing(price_list, mileage_list, slope, b, lr)
-
- 
+    return b, m
 
 def     average_compute(averagef):
     price_list = []
@@ -91,14 +79,15 @@ def     average_compute(averagef):
     data_b['average_mileage'] = sum(mileage_list) / len(mileage_list)
     return data_b
 
+def     training():
+    global b_return
+    global m_return
 
-if  __name__ == "__main__":
-    b = 0
-    m = 0
     data_dico = {} #dico is a lingo word for dictionary in french
     parser = argparse.ArgumentParser(description='Example: python3 training data.csv')
     parser.add_argument('file', type=str, help=': the data file in the current directory')
     args = parser.parse_args()
+    solu = int(input())
     try:
         averagef = open(args.file)
         f = open(args.file)
@@ -109,6 +98,11 @@ if  __name__ == "__main__":
     print(data_dico['price_list'])
     #price_list, mileage_list, sd_price, sd_mileage
     data_dico = data_normalization(data_dico)
-    b, m = gradient_descent(data_dico)
     print(data_dico['price_list'])
+    b_return, m_return = gradient_descent(data_dico)
+    print(b_return + (m_return *solu))
+    exit()
   #  data_dico = data_denormalization(data_dico)
+
+if  __name__ == "__main__":
+    training()
