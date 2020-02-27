@@ -26,7 +26,6 @@ def     gradient_descent(data_b):
     b = 0
     lr = 0.1
     iteration = 215
-    error = 0
     derror_db = 0
     derror_dm = 0
 
