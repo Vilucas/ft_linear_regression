@@ -27,19 +27,15 @@ def     gradient_descent(data_b):
     lr = 0.1
     iteration = 215
     error = 0
-    new_b = 0
-    new_m = 0
     derror_db = 0
     derror_dm = 0
 
     for j in range(iteration):
         for i in range(len(data_b['price_list'])):
             y_p = b + m * data_b['mileage_list'][i]
-            error = (y_p - data_b['price_list'][i]) ** 2 # MSE
             derror = 2 * (y_p - data_b['price_list'][i])
             derror_db += derror * 1
             derror_dm += derror * data_b['mileage_list'][i]
-        i = 0;
         b = b - (derror_db / len(data_b['price_list'])) * lr
         m = m - (derror_dm / len(data_b['mileage_list'])) * lr
         derror = 0
